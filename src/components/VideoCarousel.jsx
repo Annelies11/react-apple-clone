@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import {hightlightsSlides} from '../constants'
-import { pauseImg, playImg, replayImg } from '../utils'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/all'
+gsap.registerPlugin(ScrollTrigger)
+
+import {hightlightsSlides} from '../constants'
+import { pauseImg, playImg, replayImg } from '../utils'
 
 const VideoCarousel = () => {
     const videoRef = useRef([])
@@ -20,20 +23,71 @@ const VideoCarousel = () => {
     const [loadedData, setLoadedData] = useState([])
     const {isEnd, isLastVideo, startPlay, videoId, isPlaying} = video
     useGSAP(() => {
+        gsap.to('#slider', {
+            transform: `translateX(${-100 * videoId}%)`,
+            duration: 2,
+            ease: 'power2.inOut'
+        })
         gsap.to('#video', {
          scrollTrigger:{
             trigger: '#video',
-            toggleActions: 'restart none none none'
+            toggleActions: 'restart none none none',
          }, 
          onComplete: () => {
             setVideo((prev) => ({
                 ...prev,
                 startPlay: true,
-                isPlaying:true
+                isPlaying:true,
             }))
-         }   
+         },   
         })
     }, [isEnd, videoId])
+
+    useEffect(()=> {
+        let currentProgress = 0
+        let span = videoSpanRef.current
+        if(span[videoId]){
+            //animate video progress
+            let anim = gsap.to(span[videoId], {
+                onUpdate: () => {
+                    const progress = Math.ceil(anim.progress()*100)
+                    if(progress !=currentProgress){
+                        currentProgress = progress
+                        gsap.to(videoDivRef.current[videoId],{
+                            width: window.innerWidth < 760 ? '10vw' : window.innerWidth < 1200 ? '10vw':'4vw',
+                        })
+                        gsap.to(span[videoId], {
+                            width: `${currentProgress}%`,
+                            backgroundColor: 'white',
+                        })
+                    }
+                },
+                onComplete: ()=> {
+                    if(isPlaying) {
+                        gsap.to(videoDivRef.current[videoId], {
+                            width: '12px',
+                        })
+                        gsap.to(span[videoId], {
+                            backgroundColor: '#afafaf',
+                        })
+                    }
+                },
+            })
+            if(videoId === 0) {
+                anim.restart()
+            }
+            const animUpdate = () => {
+                anim.progress(videoRef.current[videoId].currentTime / hightlightsSlides[videoId].videoDuration)
+            }
+    
+            if(isPlaying){
+                gsap.ticker.add(animUpdate)
+            } else {
+                gsap.ticker.remove(animUpdate)
+            }
+        }
+    }, [videoId, startPlay])
+
     useEffect(()=> {
         if(loadedData.length > 3){
             if(!isPlaying){
@@ -44,33 +98,6 @@ const VideoCarousel = () => {
         }
     },[startPlay,videoId,isPlaying,loadedData])
 
-    const handleLoadedMetadata = (i, e) => setLoadedData((prev) => [...prev,e])
-
-    useEffect(()=> {
-        const currentProgress = 0
-        let span = videoSpanRef.current
-        if(span[videoId]){
-            //animate video progress
-            let anim = gsap.to(span[videoId], {
-                onUpdate: () => {
-                    const progress = Math.ceil(anim.progress()*100)
-                    if(progress !=currentProgress){
-                        currentProgress = progress
-                        gsap.to(videoDivRef.current[videoId],{
-                            width: window.innerWidth < 760 ? '10vw' : window.innerWidth < 1200 ? '10vw':'4vw'
-                        })
-                        gsap.to(span[videoId], {
-                            width: `${currentProgress}%`,
-                            backgroundColor: 'white'
-                        })
-                    }
-                },
-                onComplete: ()=> {
-
-                }
-            })
-        }
-    }, [videoId, startPlay])
     const handleProcess = (type, i) => {
         switch(type) {
             case 'video-end':
@@ -85,10 +112,16 @@ const VideoCarousel = () => {
             case 'play':
                 setVideo((prev) => ({...prev, isPlaying:!prev.isPlaying}))
                 break
+            case 'pause':
+                setVideo((prev) => ({...prev, isPlaying:!prev.isPlaying}))
+                break
             default:
                 return video
         }
     }
+
+    const handleLoadedMetadata = (i, e) => setLoadedData((prev) => [...prev,e])
+
   return (
     <>
     <div className="flex items-center">
@@ -100,12 +133,14 @@ const VideoCarousel = () => {
                         playsInline={true} 
                         preload='auto' 
                         muted 
+                        className={`${list.id === 2 && 'translate-x-44'} pointer-events-none`}
                         ref={(el)=>(
                             videoRef.current[i]=el
                             )} 
+                        onEnded={()=> i !== 3 ? handleProcess('video-end', i) : handleProcess('video-last')}
                         onPlay={()=>{
                             setVideo((prevVideo)=>({                                
-                                ...prevVideo,isPlaying:true}))
+                                ...prevVideo, isPlaying:true}))
                             }}
                         onLoadedMetadata={(e)=> handleLoadedMetadata(i,e)}
                         >
@@ -113,7 +148,7 @@ const VideoCarousel = () => {
                         </video>
                     </div>
                     <div className='absolute top-12 left-[5%] z-10'>
-                        {list.textLists.map((text)=>(
+                        {list.textLists.map((text, i)=>(
                             <p className="md:text-2xl text-xl font-medium">
                                 {text}
                             </p>
