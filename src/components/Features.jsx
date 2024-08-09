@@ -29,13 +29,13 @@ const Features = () => {
         <div className="screen-max-width">
             <div className="mb12 w-full">
                 <h1 id="features_title" className="section-heading">
-                    Explore the full story.
+                    Tak dudohi, fakta iki
                 </h1>
             </div>
             <div className="flex flex-col justify-center items-center overflow-hidden">
                 <div className="mt-32 mb-24 pl-24">
                     <h2 className="text-5xl lg:text-7xl font-semibold">iPhone</h2>
-                    <h2 className="text-5xl lg:text-7xl font-semibold">Forged in titanium.</h2>
+                    <h2 className="text-5xl lg:text-7xl font-semibold">iku dudu Android.</h2>
                 </div>
                 <div className="flex-center flex-col sm:px-10">
                     <div className="relative h-[50vh] w-full flex items-center">
@@ -55,16 +55,16 @@ const Features = () => {
                         <div className="feature-text-container">
                             <div className="flex-1 flex-center">
                                 <p className="feature-text g_text">
-                                    iPhone 15 Pro is {' '}
-                                    <span className='text-white'> the first iPhone to feature an aerospace-grade titanium design</span>,
-                                     using the same alloy that spacecrafts use for missions to Mars.
+                                    iPhone 15 Pro iku {' '}
+                                    <span className='text-white'> regane larang tur dandanane angel. Gung mesti kabeh konter iso dandani.{' '}</span>
+                                     mangkane dipikir sek. Lek sek kere rausah ngguaya tuku iPhone. 
                                 </p>
                             </div>
                             <div className="flex-1 flex-center">
                                 <p className="feature-text g_text">
-                                    Titanium has one of the best strength-to-weight ratios of any metal, making these our {' '}
-                                    <span className='text-white'> lightest Pro models ever. </span> 
-                                      You'll notice the difference the moment you pick one up.
+                                    Seng penting urip iku iso urup, ngurupi wong liya kanthi temenan nglakoni peranmu nek masyarakat, {' '}
+                                    <span className='text-white'> ora urup rupo postingan dolan kono, duwe iki, trus mok pamerne, padahal utangmu rung mok bayar. </span> 
+                                      Belajaro soko klirune wong liyo, umurmu gak cukup kanggo ngrasakne kabeh klirune menungso.
                                 </p>
                             </div>
                         </div>

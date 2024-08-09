@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { chipImg, frameImg, frameVideo } from '../utils'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { animateWithGsap } from '../utils/animations'
 
 const HowItWorks = () => {
     const videoRef = useRef()
@@ -16,6 +17,12 @@ const HowItWorks = () => {
             duration: 2,
             ease: 'power2.inOut'
         })
+        animateWithGsap('.g_fadeIn', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power2.inOut'
+        })
     }, [])
   return (
     <section className='common-padding'>
@@ -25,11 +32,11 @@ const HowItWorks = () => {
             </div>
             <div className="flex flex-col items-center">
                 <h2 className="hiw-title">
-                    A17 Pro chip.
-                    <br /> A monster win for gaming
+                    Maka dari itu.
+                    <br /> Pantaskan lah dirimu dulu
                 </h2>
                 <p className="hiw-subtitle">
-                    It's here. The biggest redesign in the history of Apple GPUs.
+                    Harga dirimu lebih mahal dari harga iPhone
                 </p>
             </div>
             <div className="mt-10 md:mt-20 mb-14">
@@ -44,20 +51,26 @@ const HowItWorks = () => {
                         </div>
                 </div>
                 <p className='text-gray font-semibold text-center mt-3'>Honkai: Star Rail</p>
-                <div className="hiw-text-container">
-                            <div className="flex flex-1 justify-center flex-col">
-                                <p className="hiw-text g_fadeIn">
-                                    A17 Pro is an entirely new class of iPhone chip that delivers our {' '}
-                                    <span className='text-white'> best graphic performance by far</span>.
-                                </p>
-                            </div>
-                                <p className="hiw-text g_fadeIn">
-                                    Mobile {' '}
-                                    <span className='text-white'> games will look and feel so immersive </span> 
-                                      with incredibly detailed environments and characters.
-                                </p>
-                            
-                        </div>
+            </div>
+            <div className="hiw-text-container">
+                <div className="flex flex-1 justify-center flex-col">
+                    <p className="hiw-text g_fadeIn">
+                        Kowe kudu ileng lek umurmu gak suwi nek dunyo iki. Sek akeh lakon apik sing iso mok lakoni. {' '}
+                        <span className='text-white'> ojo panggah dadi wong ra guno ae</span>.
+                    </p>
+
+                    <p className="hiw-text g_fadeIn">
+                        Becik {' '}
+                        <span className='text-white'> mati mergo merjuangno cita-cita luhurmu, {' '}</span> 
+                            tiwas urip ora guno terus mati ngwarisne isin nek generasi sak wise awakmu.
+                    </p> 
+                </div>
+            
+                <div className="flex-1 flex justify-center flex-col g_fadeIn">
+                    <p className="hiw-text">Man Jadda</p>
+                    <p className="hiw-bigtext">WAJADA</p>
+                    <p className="hiw-text">-hadits po maqolah gaeruh-</p>
+                </div>
             </div>
         </div>
     </section>
